@@ -1005,11 +1005,12 @@ func (cli *DockerCli) CmdImages(args ...string) error {
 
 func displayablePorts(ports []APIPort) string {
 	result := []string{}
+	fmt.Println(ports)
 	for _, port := range ports {
-		if port.Type == "tcp" {
-			result = append(result, fmt.Sprintf("%d->%d", port.PublicPort, port.PrivatePort))
+		if port.IP == "" {
+			result = append(result, fmt.Sprintf("%d/%s", port.PublicPort, port.Type))
 		} else {
-			result = append(result, fmt.Sprintf("%d->%d/%s", port.PublicPort, port.PrivatePort, port.Type))
+			result = append(result, fmt.Sprintf("%s:%d->%d/%s", port.IP, port.PublicPort, port.PrivatePort, port.Type))
 		}
 	}
 	sort.Strings(result)
